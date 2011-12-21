@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
     /// <summary>
     /// Represents the base class for OAuth 2.0 clients

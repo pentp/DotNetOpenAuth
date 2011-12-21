@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Web;
-using DotNetOpenAuth.Web.Resources;
+using DotNetOpenAuth.AspNet.Resources;
+using DotNetOpenAuth.Messaging;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
-    internal sealed class FacebookClient : OAuth2Client
+    public sealed class FacebookClient : OAuth2Client
     {
         private const string AuthorizationEndpoint = "https://www.facebook.com/dialog/oauth";
         private const string TokenEndpoint = "https://graph.facebook.com/oauth/access_token";
@@ -40,11 +41,11 @@ namespace DotNetOpenAuth.Web.Clients
         {
             // Note: Facebook doesn't like us to url-encode the redirect_uri value
             var builder = new UriBuilder(AuthorizationEndpoint);
-            builder.AppendQueryArguments(new Dictionary<string, string>
-            {
-                { "client_id", _appId },
-                { "redirect_uri", returnUrl.ToString() }
-            });
+            MessagingUtilities.AppendQueryArgs(builder, 
+                new KeyValuePair<string, string>[] {
+                    new KeyValuePair<string, string>("client_id", _appId),
+                    new KeyValuePair<string, string>("redirect_uri", returnUrl.ToString())
+                });
             return builder.Uri;
         }
 
@@ -52,13 +53,13 @@ namespace DotNetOpenAuth.Web.Clients
         {
             // Note: Facebook doesn't like us to url-encode the redirect_uri value
             var builder = new UriBuilder(TokenEndpoint);
-            builder.AppendQueryArguments(new Dictionary<string, string>
-            {
-                { "client_id", _appId },
-                { "redirect_uri", returnUrl.ToString() },
-                { "client_secret", _appSecret },
-                { "code", authorizationCode }
-            });
+            MessagingUtilities.AppendQueryArgs(builder,
+                new KeyValuePair<string, string>[] {
+                    new KeyValuePair<string, string>("client_id", _appId),
+                    new KeyValuePair<string, string>("redirect_uri", returnUrl.ToString()),
+                    new KeyValuePair<string, string>("client_secret", _appSecret),
+                    new KeyValuePair<string, string>("code", authorizationCode)
+                });
 
             using (WebClient client = new WebClient())
             {
@@ -79,24 +80,24 @@ namespace DotNetOpenAuth.Web.Clients
 
         protected override IDictionary<string, string> GetUserData(string accessToken)
         {
-            FacebookGraph graph;
+            FacebookGraphData graphData;
             var request = WebRequest.Create("https://graph.facebook.com/me?access_token=" + Uri.EscapeDataString(accessToken));
             using (var response = request.GetResponse())
             {
                 using (var responseStream = response.GetResponseStream())
                 {
-                    graph = JsonHelper.Deserialize<FacebookGraph>(responseStream);
+                    graphData = JsonHelper.Deserialize<FacebookGraphData>(responseStream);
                 }
             }
 
             // this dictionary must contains 
             var userData = new Dictionary<string, string>();
-            userData.AddItemIfNotEmpty("id", graph.Id);
-            userData.AddItemIfNotEmpty("username", graph.Email);
-            userData.AddItemIfNotEmpty("name", graph.Name);
-            userData.AddItemIfNotEmpty("link", graph.Link == null ? null : graph.Link.ToString());
-            userData.AddItemIfNotEmpty("gender", graph.Gender);
-            userData.AddItemIfNotEmpty("birthday", graph.Birthday);
+            userData.AddItemIfNotEmpty("id", graphData.Id);
+            userData.AddItemIfNotEmpty("username", graphData.Email);
+            userData.AddItemIfNotEmpty("name", graphData.Name);
+            userData.AddItemIfNotEmpty("link", graphData.Link == null ? null : graphData.Link.ToString());
+            userData.AddItemIfNotEmpty("gender", graphData.Gender);
+            userData.AddItemIfNotEmpty("birthday", graphData.Birthday);
             return userData;
         }
     }

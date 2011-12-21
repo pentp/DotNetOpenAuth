@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
     [DataContract]
     public class OAuth2AccessTokenData

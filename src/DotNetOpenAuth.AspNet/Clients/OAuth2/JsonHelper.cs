@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Json;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
     internal static class JsonHelper
     {

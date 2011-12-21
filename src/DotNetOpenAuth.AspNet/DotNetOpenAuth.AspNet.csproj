@@ -2,18 +2,17 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.props))\EnlistmentInfo.props" Condition=" '$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildProjectDirectory), EnlistmentInfo.props))' != '' " />
   <PropertyGroup>
-      <StyleCopEnabled>False</StyleCopEnabled>
+    <StyleCopEnabled>False</StyleCopEnabled>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{51835086-9611-4C53-819B-F2D5C9320873}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetOpenAuth.Web</RootNamespace>
-    <AssemblyName>DotNetOpenAuth.Web</AssemblyName>
+    <RootNamespace>DotNetOpenAuth.AspNet</RootNamespace>
+    <AssemblyName>DotNetOpenAuth.AspNet</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,17 +20,12 @@
     <Optimize>false</Optimize>
     <OutputPath>..\..\bin\v4.0\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\bin\v4.0\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <Import Project="$(ProjectRoot)tools\DotNetOpenAuth.props" />
   <Import Project="$(ProjectRoot)tools\DotNetOpenAuth.Product.props" />
@@ -48,13 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationResult.cs" />
-    <Compile Include="BuiltInAuthenticationClient.cs" />
-    <Compile Include="BuiltInOpenIDClient.cs" />
-    <Compile Include="Clients\AuthenticationClientCollection.cs" />
     <Compile Include="Clients\DictionaryExtensions.cs" />
-    <Compile Include="Clients\IAuthenticationClient.cs" />
+    <Compile Include="IAuthenticationClient.cs" />
     <Compile Include="Clients\OAuth2\FacebookClient.cs" />
-    <Compile Include="Clients\OAuth2\FacebookGraph.cs" />
+    <Compile Include="Clients\OAuth2\FacebookGraphData.cs" />
     <Compile Include="Clients\OAuth2\JsonHelper.cs" />
     <Compile Include="Clients\OAuth2\OAuth2AccessTokenData.cs" />
     <Compile Include="Clients\OAuth2\OAuth2Client.cs" />
@@ -66,15 +57,13 @@
     <Compile Include="Clients\OAuth\LinkedInClient.cs" />
     <Compile Include="Clients\OAuth\OAuthClient.cs" />
     <Compile Include="Clients\OAuth\TwitterClient.cs" />
-    <Compile Include="Clients\OpenID\AxKnownAttributes.cs" />
     <Compile Include="Clients\OpenID\GoogleOpenIdClient.cs" />
     <Compile Include="Clients\OpenID\OpenIDClient.cs" />
     <Compile Include="Clients\OpenID\YahooOpenIdClient.cs" />
-    <Compile Include="Clients\UriHelper.cs" />
-    <Compile Include="IOAuthDataProvider.cs" />
-    <Compile Include="OAuthAccount.cs" />
-    <Compile Include="OAuthAuthenticationTicketHelper.cs" />
-    <Compile Include="OAuthWebSecurity.cs" />
+    <Compile Include="UriHelper.cs" />
+    <Compile Include="IOpenAuthDataProvider.cs" />
+    <Compile Include="OpenAuthAuthenticationTicketHelper.cs" />
+    <Compile Include="OpenAuthSecurityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\WebResources.Designer.cs">
       <AutoGen>True</AutoGen>

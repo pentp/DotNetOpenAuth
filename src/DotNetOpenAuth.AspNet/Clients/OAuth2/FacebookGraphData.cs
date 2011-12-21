@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
     /// <summary>
     /// Contains data of a Facebook user.
@@ -11,7 +12,8 @@ namespace DotNetOpenAuth.Web.Clients
     /// in medium trust, it has to be public.
     /// </remarks>
     [DataContract]
-    public class FacebookGraph
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class FacebookGraphData
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using DotNetOpenAuth.Messaging;
 
-namespace DotNetOpenAuth.Web
+namespace DotNetOpenAuth.AspNet
 {
     /// <summary>
     /// Represents the result of OAuth & OpenId authentication 
@@ -51,6 +52,10 @@ namespace DotNetOpenAuth.Web
         /// </summary>
         public Exception Error { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="isSuccessful">if set to <c>true</c> [is successful].</param>
         public AuthenticationResult(bool isSuccessful) :
             this(isSuccessful,
                  provider: null,
@@ -60,6 +65,10 @@ namespace DotNetOpenAuth.Web
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="exception">The exception.</param>
         public AuthenticationResult(Exception exception) : this(isSuccessful: false)
         {
             if (exception == null)
@@ -70,6 +79,14 @@ namespace DotNetOpenAuth.Web
             Error = exception;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationResult"/> class.
+        /// </summary>
+        /// <param name="isSuccessful">if set to <c>true</c> [is successful].</param>
+        /// <param name="provider">The provider.</param>
+        /// <param name="providerUserId">The provider user id.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <param name="extraData">The extra data.</param>
         public AuthenticationResult(
             bool isSuccessful,
             string provider,
@@ -81,7 +98,11 @@ namespace DotNetOpenAuth.Web
             Provider = provider;
             ProviderUserId = providerUserId;
             UserName = userName;
-            ExtraData = extraData;
+            if (extraData != null)
+            {
+                // wrap extraData in a read-only dictionary
+                ExtraData = new ReadOnlyDictionary<string, string>(extraData);
+            }
         }
     }
 }

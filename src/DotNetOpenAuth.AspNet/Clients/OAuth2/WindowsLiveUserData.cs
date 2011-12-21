@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
-namespace DotNetOpenAuth.Web.Clients
+namespace DotNetOpenAuth.AspNet.Clients
 {
     /// <summary>
     /// Contains data of a Windows Live user.
@@ -11,6 +12,7 @@ namespace DotNetOpenAuth.Web.Clients
     /// in medium trust, it has to be public.
     /// </remarks>
     [DataContract]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class WindowsLiveUserData
     {
         [DataMember(Name = "id")]
