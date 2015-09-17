@@ -6,19 +6,15 @@
 
 namespace DotNetOpenAuth.AspNet.Clients {
 	using System;
-	using System.Collections.Generic;
 	using System.Collections.Specialized;
 	using System.Diagnostics.CodeAnalysis;
-	using System.Threading;
-	using System.Threading.Tasks;
 	using System.Web;
-	using DotNetOpenAuth.Messaging;
 	using Validation;
 
 	/// <summary>
 	/// Represents the base class for OAuth 2.0 clients
 	/// </summary>
-	public abstract class OAuth2Client : IAuthenticationClient {
+	public abstract class OAuth2Client {
 		#region Constants and Fields
 
 		/// <summary>
@@ -63,30 +59,12 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="returnUrl">The return url after users have completed authenticating against external website.</param>
-		/// <param name="cancellationToken">The cancellation token.</param>
-		/// <returns>
-		/// A task that completes with the asynchronous operation.
-		/// </returns>
-		public virtual Task RequestAuthenticationAsync(HttpContextBase context, Uri returnUrl, CancellationToken cancellationToken = default(CancellationToken)) {
+		public virtual void RequestAuthentication(HttpContextBase context, Uri returnUrl) {
 			Requires.NotNull(context, "context");
 			Requires.NotNull(returnUrl, "returnUrl");
 
 			string redirectUrl = this.GetServiceLoginUrl(returnUrl).AbsoluteUri;
 			context.Response.Redirect(redirectUrl, endResponse: true);
-			return MessagingUtilities.CompletedTask;
-		}
-
-		/// <summary>
-		/// Check if authentication succeeded after user is redirected back from the service provider.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		/// <param name="cancellationToken">The cancellation token.</param>
-		/// <returns>
-		/// An instance of <see cref="AuthenticationResult" /> containing authentication result.
-		/// </returns>
-		/// <exception cref="System.InvalidOperationException">Always thrown.</exception>
-		public Task<AuthenticationResult> VerifyAuthenticationAsync(HttpContextBase context, CancellationToken cancellationToken = default(CancellationToken)) {
-			throw new InvalidOperationException(WebResources.OAuthRequireReturnUrl);
 		}
 
 		/// <summary>
@@ -94,11 +72,10 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </summary>
 		/// <param name="context">The context.</param>
 		/// <param name="returnPageUrl">The return URL which should match the value passed to RequestAuthentication() method.</param>
-		/// <param name="cancellationToken">The cancellation token.</param>
 		/// <returns>
 		/// An instance of <see cref="AuthenticationResult" /> containing authentication result.
 		/// </returns>
-		public virtual async Task<AuthenticationResult> VerifyAuthenticationAsync(HttpContextBase context, Uri returnPageUrl, CancellationToken cancellationToken = default(CancellationToken)) {
+		public virtual AuthenticationResult VerifyAuthentication(HttpContextBase context, Uri returnPageUrl) {
 			Requires.NotNull(context, "context");
 
 			string code = context.Request.QueryString["code"];
