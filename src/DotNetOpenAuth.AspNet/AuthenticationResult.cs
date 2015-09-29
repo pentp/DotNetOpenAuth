@@ -6,10 +6,8 @@
 
 namespace DotNetOpenAuth.AspNet {
 	using System;
-	using System.Collections.Generic;
 	using System.Collections.Specialized;
 	using System.Diagnostics.CodeAnalysis;
-	using DotNetOpenAuth.Messaging;
 
 	/// <summary>
 	/// Represents the result of OAuth or OpenID authentication.

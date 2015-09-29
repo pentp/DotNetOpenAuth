@@ -6,19 +6,17 @@
 
 namespace DotNetOpenAuth.AspNet.Clients {
 	using System;
-	using System.Collections.Generic;
 	using System.Collections.Specialized;
 	using System.Diagnostics.CodeAnalysis;
 	using System.Net;
 	using System.Web;
-	using DotNetOpenAuth.Messaging;
 	using Validation;
 
 	/// <summary>
 	/// The facebook client.
 	/// </summary>
 	[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Facebook", Justification = "Brand name")]
-	public sealed class FacebookClient : OAuth2Client {
+	public class FacebookClient : OAuth2Client {
 		#region Constants and Fields
 
 		/// <summary>
@@ -100,14 +98,14 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <returns>An absolute URI.</returns>
 		protected override Uri GetServiceLoginUrl(Uri returnUrl) {
 			// Note: Facebook doesn't like us to url-encode the redirect_uri value
-			var builder = new UriBuilder(AuthorizationEndpoint);
-			builder.AppendQueryArgs(
-				new Dictionary<string, string> {
+			return new UriBuilder(AuthorizationEndpoint)
+			{
+				Query = new NameValueCollection {
 					{ "client_id", this.appId },
 					{ "redirect_uri", returnUrl.AbsoluteUri },
 					{ "scope", string.Join(" ", this.scope) },
-				});
-			return builder.Uri;
+				}.BuildQuery()
+			}.Uri;
 		}
 
 		/// <summary>
@@ -121,7 +119,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			FacebookGraphData graphData;
 			var request =
 				WebRequest.Create(
-					"https://graph.facebook.com/me?access_token=" + MessagingUtilities.EscapeUriDataStringRfc3986(accessToken));
+					"https://graph.facebook.com/me?access_token=" + Uri.EscapeDataString(accessToken));
 			using (var response = request.GetResponse()) {
 				using (var responseStream = response.GetResponseStream()) {
 					graphData = JsonHelper.Deserialize<FacebookGraphData>(responseStream);
@@ -154,14 +152,13 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		protected override string QueryAccessToken(Uri returnUrl, string authorizationCode) {
 			// Note: Facebook doesn't like us to url-encode the redirect_uri value
 			var builder = new UriBuilder(TokenEndpoint);
-			builder.AppendQueryArgs(
-				new Dictionary<string, string> {
-					{ "client_id", this.appId },
-					{ "redirect_uri", NormalizeHexEncoding(returnUrl.AbsoluteUri) },
-					{ "client_secret", this.appSecret },
-					{ "code", authorizationCode },
-					{ "scope", "email" },
-				});
+			builder.Query = new NameValueCollection {
+				{ "client_id", this.appId },
+				{ "redirect_uri", NormalizeHexEncoding(returnUrl.AbsoluteUri) },
+				{ "client_secret", this.appSecret },
+				{ "code", authorizationCode },
+				{ "scope", "email" },
+			}.BuildQuery();
 
 			using (WebClient client = new WebClient()) {
 				string data = client.DownloadString(builder.Uri);

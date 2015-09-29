@@ -6,11 +6,9 @@
 
 namespace DotNetOpenAuth.AspNet.Clients {
 	using System;
-	using System.Collections.Generic;
 	using System.Collections.Specialized;
-	using System.IO;
 	using System.Net;
-	using DotNetOpenAuth.Messaging;
+	using System.Text;
 	using Validation;
 
 	/// <summary>
@@ -105,16 +103,15 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// An absolute URL.
 		/// </returns>
 		protected override Uri GetServiceLoginUrl(Uri returnUrl) {
-			var builder = new UriBuilder(AuthorizationEndpoint);
-			builder.AppendQueryArgs(
-				new Dictionary<string, string> {
+			return new UriBuilder(AuthorizationEndpoint)
+			{
+				Query = new NameValueCollection {
 					{ "client_id", this.appId },
 					{ "scope", string.Join(" ", this.requestedScopes) },
 					{ "response_type", "code" },
 					{ "redirect_uri", returnUrl.AbsoluteUri },
-				});
-
-			return builder.Uri;
+				}.BuildQuery()
+			}.Uri;
 		}
 
 		/// <summary>
@@ -130,7 +127,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			MicrosoftClientUserData graph;
 			var request =
 				WebRequest.Create(
-					"https://apis.live.net/v5.0/me?access_token=" + MessagingUtilities.EscapeUriDataStringRfc3986(accessToken));
+					"https://apis.live.net/v5.0/me?access_token=" + Uri.EscapeDataString(accessToken));
 			using (var response = request.GetResponse()) {
 				using (var responseStream = response.GetResponseStream()) {
 					graph = JsonHelper.Deserialize<MicrosoftClientUserData>(responseStream);
@@ -161,33 +158,30 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// The query access token.
 		/// </returns>
 		protected override string QueryAccessToken(Uri returnUrl, string authorizationCode) {
-			var entity =
-				MessagingUtilities.CreateQueryString(
-					new Dictionary<string, string> {
-						{ "client_id", this.appId },
-						{ "redirect_uri", returnUrl.AbsoluteUri },
-						{ "client_secret", this.appSecret },
-						{ "code", authorizationCode },
-						{ "grant_type", "authorization_code" },
-					});
+			var entity = Encoding.ASCII.GetBytes(new NameValueCollection {
+				{ "client_id", this.appId },
+				{ "redirect_uri", returnUrl.AbsoluteUri },
+				{ "client_secret", this.appSecret },
+				{ "code", authorizationCode },
+				{ "grant_type", "authorization_code" },
+			}.BuildQuery());
 
-			WebRequest tokenRequest = WebRequest.Create(TokenEndpoint);
+			var tokenRequest = WebRequest.CreateHttp(TokenEndpoint);
 			tokenRequest.ContentType = "application/x-www-form-urlencoded";
 			tokenRequest.ContentLength = entity.Length;
 			tokenRequest.Method = "POST";
 
-			using (Stream requestStream = tokenRequest.GetRequestStream()) {
-				var writer = new StreamWriter(requestStream);
-				writer.Write(entity);
-				writer.Flush();
+			using (var requestStream = tokenRequest.GetRequestStream()) {
+				requestStream.Write(entity, 0, entity.Length);
 			}
 
-			HttpWebResponse tokenResponse = (HttpWebResponse)tokenRequest.GetResponse();
-			if (tokenResponse.StatusCode == HttpStatusCode.OK) {
-				using (Stream responseStream = tokenResponse.GetResponseStream()) {
-					var tokenData = JsonHelper.Deserialize<OAuth2AccessTokenData>(responseStream);
-					if (tokenData != null) {
-						return tokenData.AccessToken;
+			using (var tokenResponse = (HttpWebResponse)tokenRequest.GetResponse()) {
+				if (tokenResponse.StatusCode == HttpStatusCode.OK) {
+					using (var responseStream = tokenResponse.GetResponseStream()) {
+						var tokenData = JsonHelper.Deserialize<OAuth2AccessTokenData>(responseStream);
+						if (tokenData != null) {
+							return tokenData.AccessToken;
+						}
 					}
 				}
 			}
