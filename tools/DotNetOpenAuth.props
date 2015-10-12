@@ -1,17 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" InitialTargets="InitializeProps">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
 	<PropertyGroup>
 		<ProductName>DotNetOpenAuth</ProductName>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+		<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
 		<DisableFastUpToDateCheck>false</DisableFastUpToDateCheck>
-		<DropsRoot>$(ProjectRoot)drops\$(TargetFrameworkVersion)\$(Configuration)\</DropsRoot>
-		<OutputPath>$(ProjectRoot)bin\$(TargetFrameworkVersion)\$(Configuration)\</OutputPath>
-		<OutputPath45>$(ProjectRoot)bin\v4.5\$(Configuration)\</OutputPath45>
+		<DropsRoot>$(ProjectRoot)drops\$(Configuration)\</DropsRoot>
+		<OutputPath>$(ProjectRoot)bin\$(Configuration)\</OutputPath>
 		<DocOutputPath>$(ProjectRoot)doc\</DocOutputPath>
-		<IntermediatePath>$(ProjectRoot)obj\$(TargetFrameworkVersion)\$(Configuration)\</IntermediatePath>
-		<IntermediatePath45>$(ProjectRoot)obj\v4.5\$(Configuration)\</IntermediatePath45>
-		<BaseIntermediateOutputPath Condition=" '$(BaseIntermediateOutputPath)' == '' ">obj\$(TargetFrameworkVersion)\</BaseIntermediateOutputPath>
+		<IntermediatePath>$(ProjectRoot)obj\$(Configuration)\</IntermediatePath>
+		<BaseIntermediateOutputPath Condition=" '$(BaseIntermediateOutputPath)' == '' ">obj\</BaseIntermediateOutputPath>
 		<ToolsDir>$(ProjectRoot)tools\</ToolsDir>
 		<ZipLevel>6</ZipLevel>
 		<Zip7ToolPath>$(ToolsDir)7-Zip.x86\</Zip7ToolPath>
@@ -61,11 +59,4 @@
 	</ItemGroup>
 
 	<Import Project="$(ProjectRoot)lib\DotNetOpenAuth.BuildTasks.targets" />
-
-	<Target Name="InitializeProps">
-		<CheckAdminRights>
-			<Output TaskParameter="IsElevated" PropertyName="IsElevated" />
-		</CheckAdminRights>
-		<Message Text="IsElevated = $(IsElevated)" />
-	</Target>
 </Project>
