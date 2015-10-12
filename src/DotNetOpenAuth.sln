@@ -10,16 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{8D4236F7-C49B-49D3-BA71-6B86C9514BDE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OAuth2", "OAuth2", "{238B6BA8-AD99-43C9-B8E2-D2BCE6CE04DC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetOpenAuth.Core", "DotNetOpenAuth.Core\DotNetOpenAuth.Core.csproj", "{60426312-6AE5-4835-8667-37EDEA670222}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetOpenAuth.OAuth2", "DotNetOpenAuth.OAuth2\DotNetOpenAuth.OAuth2.csproj", "{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetOpenAuth.OAuth2.Client", "DotNetOpenAuth.OAuth2.Client\DotNetOpenAuth.OAuth2.Client.csproj", "{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetOpenAuth.OAuth2.ClientAuthorization", "DotNetOpenAuth.OAuth2.ClientAuthorization\DotNetOpenAuth.OAuth2.ClientAuthorization.csproj", "{CCF3728A-B3D7-404A-9BC6-75197135F2D7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4F1C8041-7A79-46F5-B1B7-688DC85DD400}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -34,30 +24,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{60426312-6AE5-4835-8667-37EDEA670222}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
-		{60426312-6AE5-4835-8667-37EDEA670222}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
-		{60426312-6AE5-4835-8667-37EDEA670222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60426312-6AE5-4835-8667-37EDEA670222}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60426312-6AE5-4835-8667-37EDEA670222}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60426312-6AE5-4835-8667-37EDEA670222}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{51835086-9611-4C53-819B-F2D5C9320873}.CodeAnalysis|Any CPU.ActiveCfg = CodeAnalysis|Any CPU
 		{51835086-9611-4C53-819B-F2D5C9320873}.CodeAnalysis|Any CPU.Build.0 = CodeAnalysis|Any CPU
 		{51835086-9611-4C53-819B-F2D5C9320873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -69,11 +35,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{238B6BA8-AD99-43C9-B8E2-D2BCE6CE04DC} = {8D4236F7-C49B-49D3-BA71-6B86C9514BDE}
-		{60426312-6AE5-4835-8667-37EDEA670222} = {8D4236F7-C49B-49D3-BA71-6B86C9514BDE}
-		{56459A6C-6BA2-4BAC-A9C0-27E3BD961FA6} = {238B6BA8-AD99-43C9-B8E2-D2BCE6CE04DC}
-		{CDEDD439-7F35-4E6E-8605-4E70BDC4CC99} = {238B6BA8-AD99-43C9-B8E2-D2BCE6CE04DC}
-		{CCF3728A-B3D7-404A-9BC6-75197135F2D7} = {238B6BA8-AD99-43C9-B8E2-D2BCE6CE04DC}
 		{51835086-9611-4C53-819B-F2D5C9320873} = {8D4236F7-C49B-49D3-BA71-6B86C9514BDE}
 	EndGlobalSection
 EndGlobal
