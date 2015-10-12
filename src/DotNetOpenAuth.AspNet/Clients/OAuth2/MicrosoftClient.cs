@@ -14,7 +14,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	/// <summary>
 	/// The Microsoft account client.
 	/// </summary>
-	public class MicrosoftClient : OAuth2Client {
+	public sealed class MicrosoftClient : OAuth2Client {
 		#region Constants and Fields
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <param name="appId">The app id.</param>
 		/// <param name="appSecret">The app secret.</param>
 		public MicrosoftClient(string appId, string appSecret)
-			: this(appId, appSecret, "wl.basic")
+			: this(appId, appSecret, "wl.email")
 		{
 		}
 
@@ -64,18 +64,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <param name="appSecret">The app secret.</param>
 		/// <param name="requestedScopes">One or more requested scopes.</param>
 		public MicrosoftClient(string appId, string appSecret, params string[] requestedScopes)
-			: this("microsoft", appId, appSecret, requestedScopes) {
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MicrosoftClient"/> class.
-		/// </summary>
-		/// <param name="providerName">The provider name.</param>
-		/// <param name="appId">The app id.</param>
-		/// <param name="appSecret">The app secret.</param>
-		/// <param name="requestedScopes">One or more requested scopes.</param>
-		protected MicrosoftClient(string providerName, string appId, string appSecret, string[] requestedScopes)
-			: base(providerName) {
+			: base("microsoft") {
 			Requires.NotNullOrEmpty(appId, "appId");
 			Requires.NotNullOrEmpty(appSecret, "appSecret");
 
@@ -85,13 +74,6 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		}
 
 		#endregion
-
-		/// <summary>
-		/// Gets the identifier for this client as it is registered with Microsoft.
-		/// </summary>
-		protected string AppId {
-			get { return this.appId; }
-		}
 
 		#region Methods
 
@@ -142,6 +124,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			userData.AddItemIfNotEmpty("gender", graph.Gender);
 			userData.AddItemIfNotEmpty("firstname", graph.FirstName);
 			userData.AddItemIfNotEmpty("lastname", graph.LastName);
+			userData.AddItemIfNotEmpty("email", graph.EMails?["preferred"]);
 			return userData;
 		}
 

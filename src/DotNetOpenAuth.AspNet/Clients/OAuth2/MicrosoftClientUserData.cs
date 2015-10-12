@@ -6,6 +6,7 @@
 
 namespace DotNetOpenAuth.AspNet.Clients {
 	using System;
+	using System.Collections.Specialized;
 	using System.ComponentModel;
 	using System.Runtime.Serialization;
 
@@ -17,50 +18,50 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	/// </remarks>
 	[DataContract]
 	[EditorBrowsable(EditorBrowsableState.Never)]
-	public class MicrosoftClientUserData {
-		#region Public Properties
-
+	public sealed class MicrosoftClientUserData {
 		/// <summary>
 		/// Gets or sets the first name.
 		/// </summary>
 		/// <value> The first name. </value>
 		[DataMember(Name = "first_name")]
-		public string FirstName { get; set; }
+		public string FirstName;
 
 		/// <summary>
 		/// Gets or sets the gender.
 		/// </summary>
 		/// <value> The gender. </value>
 		[DataMember(Name = "gender")]
-		public string Gender { get; set; }
+		public string Gender;
 
 		/// <summary>
 		/// Gets or sets the id.
 		/// </summary>
 		/// <value> The id. </value>
 		[DataMember(Name = "id")]
-		public string Id { get; set; }
+		public string Id;
 
 		/// <summary>
 		/// Gets or sets the last name.
 		/// </summary>
 		/// <value> The last name. </value>
 		[DataMember(Name = "last_name")]
-		public string LastName { get; set; }
+		public string LastName;
 
 		/// <summary>
 		/// Gets or sets the link.
 		/// </summary>
 		/// <value> The link. </value>
 		[DataMember(Name = "link")]
-		public Uri Link { get; set; }
+		public Uri Link;
 
 		/// <summary>
 		/// Gets or sets the name.
 		/// </summary>
 		/// <value> The name. </value>
 		[DataMember(Name = "name")]
-		public string Name { get; set; }
-		#endregion
+		public string Name;
+
+		[DataMember(Name = "emails")]
+		public NameValueCollection EMails;
 	}
 }
