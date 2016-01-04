@@ -32,12 +32,9 @@
     <Reference Include="System" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
-    <Reference Include="Validation, Version=2.2.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Validation.cs" />
     <Compile Include="AuthenticationResult.cs" />
     <Compile Include="Clients\DictionaryExtensions.cs" />
     <Compile Include="Clients\OAuth2\FacebookClient.cs" />
@@ -48,9 +45,6 @@
     <Compile Include="Clients\OAuth2\MicrosoftClient.cs" />
     <Compile Include="Clients\OAuth2\MicrosoftClientUserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ProjectRoot)tools\DotNetOpenAuth.targets" />
