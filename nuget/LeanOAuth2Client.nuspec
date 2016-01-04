@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>LeanOAuth2Client</id>
+		<version>1.0.0</version>
+		<title>Lean OAuth 2.0 Client</title>
+		<authors>Andrew Arnott, David Christiansen, Pent Ploompuu</authors>
+		<licenseUrl>http://www.opensource.org/licenses/ms-pl.html</licenseUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>OAuth 2.0 client with no extra dependencies and a simple API.</description>
+	</metadata>
+	<files>
+		<file src="..\bin\Release\DotNetOpenAuth.AspNet.dll" target="lib\net45-full" />
+		<file src="..\bin\Release\DotNetOpenAuth.AspNet.pdb" target="lib\net45-full" />
+		<file src="..\bin\Release\DotNetOpenAuth.AspNet.xml" target="lib\net45-full" />
+	</files>
+</package>
