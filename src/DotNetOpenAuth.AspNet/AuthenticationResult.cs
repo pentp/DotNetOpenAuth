@@ -47,7 +47,7 @@ namespace DotNetOpenAuth.AspNet {
 		public AuthenticationResult(Exception exception, string provider)
 			: this(isSuccessful: false) {
 			if (exception == null) {
-				throw new ArgumentNullException("exception");
+				throw new ArgumentNullException(nameof(exception));
 			}
 
 			this.Error = exception;
@@ -84,28 +84,28 @@ namespace DotNetOpenAuth.AspNet {
 		/// <summary>
 		/// Gets the error that may have occured during the authentication process
 		/// </summary>
-		public Exception Error { get; private set; }
+		public Exception Error { get; }
 
 		/// <summary>
 		/// Gets the optional extra data that may be returned from the provider
 		/// </summary>
-		public NameValueCollection ExtraData { get; private set; }
+		public NameValueCollection ExtraData { get; }
 
 		/// <summary>
 		/// Gets a value indicating whether the authentication step is successful.
 		/// </summary>
 		/// <value> <c>true</c> if authentication is successful; otherwise, <c>false</c> . </value>
-		public bool IsSuccessful { get; private set; }
+		public bool IsSuccessful { get; }
 
 		/// <summary>
 		/// Gets the provider's name.
 		/// </summary>
-		public string Provider { get; private set; }
+		public string Provider { get; }
 
 		/// <summary>
 		/// Gets the user id that is returned from the provider.  It is unique only within the Provider's namespace.
 		/// </summary>
-		public string ProviderUserId { get; private set; }
+		public string ProviderUserId { get; }
 
 		/// <summary>
 		/// Gets an (insecure, non-unique) alias for the user that the user should recognize as himself/herself.
@@ -115,6 +115,6 @@ namespace DotNetOpenAuth.AspNet {
 		/// This alias may come from the Provider or may be derived by the relying party if the Provider does not supply one.
 		/// It is not guaranteed to be unique and certainly does not merit any trust in any suggested authenticity.
 		/// </remarks>
-		public string UserName { get; private set; }
+		public string UserName { get; }
 	}
 }

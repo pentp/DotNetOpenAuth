@@ -12,7 +12,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	/// <summary>
 	/// The dictionary extensions.
 	/// </summary>
-	internal static class DictionaryExtensions {
+	static class DictionaryExtensions {
 		/// <summary>
 		/// Adds a key/value pair to the specified dictionary if the value is not null or empty.
 		/// </summary>
@@ -27,7 +27,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </param>
 		internal static void AddItemIfNotEmpty(this NameValueCollection dictionary, string key, string value) {
 			if (key == null) {
-				throw new ArgumentNullException("key");
+				throw new ArgumentNullException(nameof(key));
 			}
 
 			if (!string.IsNullOrEmpty(value)) {

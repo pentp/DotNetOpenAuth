@@ -53,7 +53,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <param name="appId">The app id.</param>
 		/// <param name="appSecret">The app secret.</param>
 		public MicrosoftClient(string appId, string appSecret)
-			: this(appId, appSecret, "wl.email")
+			: this(appId, appSecret, "wl.emails")
 		{
 		}
 
@@ -65,8 +65,8 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <param name="requestedScopes">One or more requested scopes.</param>
 		public MicrosoftClient(string appId, string appSecret, params string[] requestedScopes)
 			: base("microsoft") {
-			Requires.NotNullOrEmpty(appId, "appId");
-			Requires.NotNullOrEmpty(appSecret, "appSecret");
+			Requires.NotNullOrEmpty(appId, nameof(appId));
+			Requires.NotNullOrEmpty(appSecret, nameof(appSecret));
 
 			this.appId = appId;
 			this.appSecret = appSecret;
@@ -120,7 +120,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			userData.AddItemIfNotEmpty("id", graph.Id);
 			userData.AddItemIfNotEmpty("username", graph.Name);
 			userData.AddItemIfNotEmpty("name", graph.Name);
-			userData.AddItemIfNotEmpty("link", graph.Link == null ? null : graph.Link.AbsoluteUri);
+			userData.AddItemIfNotEmpty("link", graph.Link?.AbsoluteUri);
 			userData.AddItemIfNotEmpty("gender", graph.Gender);
 			userData.AddItemIfNotEmpty("firstname", graph.FirstName);
 			userData.AddItemIfNotEmpty("lastname", graph.LastName);

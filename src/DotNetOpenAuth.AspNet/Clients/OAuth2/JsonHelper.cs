@@ -13,7 +13,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	/// <summary>
 	/// The json helper.
 	/// </summary>
-	internal static class JsonHelper {
+	static class JsonHelper {
 		#region Public Methods and Operators
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// The deserialized value.
 		/// </returns>
 		public static T Deserialize<T>(Stream stream) where T : class {
-			Requires.NotNull(stream, "stream");
+			Requires.NotNull(stream, nameof(stream));
 
 			var serializer = new DataContractJsonSerializer(typeof(T));
 			return (T)serializer.ReadObject(stream);

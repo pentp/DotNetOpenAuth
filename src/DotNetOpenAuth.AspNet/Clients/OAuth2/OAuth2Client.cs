@@ -15,15 +15,6 @@ namespace DotNetOpenAuth.AspNet.Clients {
 	/// Represents the base class for OAuth 2.0 clients
 	/// </summary>
 	public abstract class OAuth2Client {
-		#region Constants and Fields
-
-		/// <summary>
-		/// The provider name.
-		/// </summary>
-		private readonly string providerName;
-
-		#endregion
-
 		#region Constructors and Destructors
 
 		/// <summary>
@@ -33,8 +24,8 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// Name of the provider. 
 		/// </param>
 		protected OAuth2Client(string providerName) {
-			Requires.NotNull(providerName, "providerName");
-			this.providerName = providerName;
+			Requires.NotNull(providerName, nameof(providerName));
+			this.ProviderName = providerName;
 		}
 
 		#endregion
@@ -44,11 +35,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <summary>
 		/// Gets the name of the provider which provides authentication service.
 		/// </summary>
-		public string ProviderName {
-			get {
-				return this.providerName;
-			}
-		}
+		public string ProviderName { get; }
 
 		#endregion
 
@@ -57,14 +44,12 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <summary>
 		/// Attempts to authenticate users by forwarding them to an external website, and upon succcess or failure, redirect users back to the specified url.
 		/// </summary>
-		/// <param name="context">The context.</param>
 		/// <param name="returnUrl">The return url after users have completed authenticating against external website.</param>
-		public virtual void RequestAuthentication(HttpContextBase context, Uri returnUrl) {
-			Requires.NotNull(context, "context");
-			Requires.NotNull(returnUrl, "returnUrl");
+		/// <returns>The url to the external website that the user should be redirected to</returns>
+		public virtual Uri RequestAuthentication(Uri returnUrl) {
+			Requires.NotNull(returnUrl, nameof(returnUrl));
 
-			string redirectUrl = this.GetServiceLoginUrl(returnUrl).AbsoluteUri;
-			context.Response.Redirect(redirectUrl, endResponse: true);
+			return this.GetServiceLoginUrl(returnUrl);
 		}
 
 		/// <summary>
@@ -76,7 +61,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// An instance of <see cref="AuthenticationResult" /> containing authentication result.
 		/// </returns>
 		public virtual AuthenticationResult VerifyAuthentication(HttpContextBase context, Uri returnPageUrl) {
-			Requires.NotNull(context, "context");
+			Requires.NotNull(context, nameof(context));
 
 			string code = context.Request.QueryString["code"];
 			if (string.IsNullOrEmpty(code)) {

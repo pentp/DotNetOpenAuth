@@ -76,9 +76,9 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </param>
 		public FacebookClient(string appId, string appSecret, params string[] scope)
 			: base("facebook") {
-			Requires.NotNullOrEmpty(appId, "appId");
-			Requires.NotNullOrEmpty(appSecret, "appSecret");
-			Requires.NotNullOrEmpty(scope, "scope");
+			Requires.NotNullOrEmpty(appId, nameof(appId));
+			Requires.NotNullOrEmpty(appSecret, nameof(appSecret));
+			Requires.NotNullOrEmpty(scope, nameof(scope));
 
 			this.appId = appId;
 			this.appSecret = appSecret;
@@ -130,9 +130,10 @@ namespace DotNetOpenAuth.AspNet.Clients {
 			userData.AddItemIfNotEmpty("id", graphData.Id);
 			userData.AddItemIfNotEmpty("username", graphData.Email);
 			userData.AddItemIfNotEmpty("name", graphData.Name);
-			userData.AddItemIfNotEmpty("link", graphData.Link == null ? null : graphData.Link.AbsoluteUri);
+			userData.AddItemIfNotEmpty("link", graphData.Link?.AbsoluteUri);
 			userData.AddItemIfNotEmpty("gender", graphData.Gender);
 			userData.AddItemIfNotEmpty("birthday", graphData.Birthday);
+			userData.AddItemIfNotEmpty("email", graphData.Email);
 			return userData;
 		}
 
