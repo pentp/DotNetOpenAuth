@@ -5,64 +5,21 @@
 //-----------------------------------------------------------------------
 
 namespace DotNetOpenAuth.AspNet.Clients {
-	using System;
 	using System.ComponentModel;
-	using System.Diagnostics.CodeAnalysis;
 	using System.Runtime.Serialization;
 
-	/// <summary>
-	/// Contains data of a Facebook user.
-	/// </summary>
-	/// <remarks>
-	/// Technically, this class doesn't need to be public, but because we want to make it serializable in medium trust, it has to be public.
-	/// </remarks>
-	[DataContract]
-	[EditorBrowsable(EditorBrowsableState.Never)]
-	[SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Facebook", Justification = "Brand name")]
-	public class FacebookGraphData {
-		#region Public Properties
-
-		/// <summary>
-		/// Gets or sets the birthday.
-		/// </summary>
-		/// <value> The birthday. </value>
-		[DataMember(Name = "birthday")]
-		public string Birthday { get; set; }
-
-		/// <summary>
-		/// Gets or sets the email.
-		/// </summary>
-		/// <value> The email. </value>
+#pragma warning disable CS1591
+	[DataContract, EditorBrowsable(EditorBrowsableState.Never)]
+	public sealed class FacebookGraphData {
 		[DataMember(Name = "email")]
-		public string Email { get; set; }
-
-		/// <summary>
-		/// Gets or sets the gender.
-		/// </summary>
-		/// <value> The gender. </value>
-		[DataMember(Name = "gender")]
-		public string Gender { get; set; }
-
-		/// <summary>
-		/// Gets or sets the id.
-		/// </summary>
-		/// <value> The id. </value>
+		public string Email;
 		[DataMember(Name = "id")]
-		public string Id { get; set; }
-
-		/// <summary>
-		/// Gets or sets the link.
-		/// </summary>
-		/// <value> The link. </value>
-		[DataMember(Name = "link")]
-		public Uri Link { get; set; }
-
-		/// <summary>
-		/// Gets or sets the name.
-		/// </summary>
-		/// <value> The name. </value>
+		public string Id;
 		[DataMember(Name = "name")]
-		public string Name { get; set; }
-		#endregion
+		public string Name;
+		[DataMember(Name = "first_name")]
+		public string FirstName;
+		[DataMember(Name = "last_name")]
+		public string LastName;
 	}
 }

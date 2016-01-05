@@ -12,7 +12,7 @@ namespace DotNetOpenAuth.AspNet {
 	/// <summary>
 	/// Represents the result of OAuth or OpenID authentication.
 	/// </summary>
-	public class AuthenticationResult {
+	public sealed class AuthenticationResult {
 		/// <summary>
 		/// Returns an instance which indicates failed authentication.
 		/// </summary>
@@ -26,8 +26,7 @@ namespace DotNetOpenAuth.AspNet {
 		/// <param name="isSuccessful">
 		/// if set to <c>true</c> [is successful]. 
 		/// </param>
-		public AuthenticationResult(bool isSuccessful)
-			: this(isSuccessful, provider: null, providerUserId: null, userName: null, extraData: null) { }
+		public AuthenticationResult(bool isSuccessful) : this(isSuccessful, null, null, null, null) { }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AuthenticationResult"/> class.
@@ -66,18 +65,18 @@ namespace DotNetOpenAuth.AspNet {
 		/// <param name="providerUserId">
 		/// The provider user id. 
 		/// </param>
-		/// <param name="userName">
-		/// Name of the user. 
+		/// <param name="email">
+		/// User e-mail. 
 		/// </param>
 		/// <param name="extraData">
 		/// The extra data. 
 		/// </param>
 		public AuthenticationResult(
-			bool isSuccessful, string provider, string providerUserId, string userName, NameValueCollection extraData) {
+			bool isSuccessful, string provider, string providerUserId, string email, NameValueCollection extraData) {
 			this.IsSuccessful = isSuccessful;
 			this.Provider = provider;
 			this.ProviderUserId = providerUserId;
-			this.UserName = userName;
+			this.Email = email;
 			this.ExtraData = extraData ?? new NameValueCollection();
 		}
 
@@ -108,13 +107,8 @@ namespace DotNetOpenAuth.AspNet {
 		public string ProviderUserId { get; }
 
 		/// <summary>
-		/// Gets an (insecure, non-unique) alias for the user that the user should recognize as himself/herself.
+		/// Gets the user e-mail that is returned from the provider.
 		/// </summary>
-		/// <value>This may take the form of an email address, a URL, or any other value that the user may recognize.</value>
-		/// <remarks>
-		/// This alias may come from the Provider or may be derived by the relying party if the Provider does not supply one.
-		/// It is not guaranteed to be unique and certainly does not merit any trust in any suggested authenticity.
-		/// </remarks>
-		public string UserName { get; }
+		public string Email { get; }
 	}
 }

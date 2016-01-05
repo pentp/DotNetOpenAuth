@@ -78,16 +78,10 @@ namespace DotNetOpenAuth.AspNet.Clients {
 				return AuthenticationResult.Failed;
 			}
 
-			// Some oAuth providers do not return value for the 'username' attribute. 
-			// In that case, try the 'name' attribute. If it's still unavailable, fall back to 'id'
-			string id = userData["id"];
-			string name = userData["username"] ?? userData["name"] ?? id;
-
 			// add the access token to the user data dictionary just in case page developers want to use it
 			userData["accesstoken"] = accessToken;
 
-			return new AuthenticationResult(
-				isSuccessful: true, provider: this.ProviderName, providerUserId: id, userName: name, extraData: userData);
+			return new AuthenticationResult(true, ProviderName, userData["id"], userData["email"], userData);
 		}
 
 		#endregion

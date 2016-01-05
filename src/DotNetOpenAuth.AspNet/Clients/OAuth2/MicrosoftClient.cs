@@ -107,24 +107,16 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// </returns>
 		protected override NameValueCollection GetUserData(string accessToken) {
 			MicrosoftClientUserData graph;
-			var request =
-				WebRequest.Create(
-					"https://apis.live.net/v5.0/me?access_token=" + Uri.EscapeDataString(accessToken));
-			using (var response = request.GetResponse()) {
-				using (var responseStream = response.GetResponseStream()) {
-					graph = JsonHelper.Deserialize<MicrosoftClientUserData>(responseStream);
-				}
+			using (var response = WebRequest.CreateHttp("https://apis.live.net/v5.0/me?access_token=" + Uri.EscapeDataString(accessToken)).GetResponse()) {
+				graph = JsonHelper.Deserialize<MicrosoftClientUserData>(response.GetResponseStream());
 			}
 
 			var userData = new NameValueCollection();
 			userData.AddItemIfNotEmpty("id", graph.Id);
-			userData.AddItemIfNotEmpty("username", graph.Name);
 			userData.AddItemIfNotEmpty("name", graph.Name);
-			userData.AddItemIfNotEmpty("link", graph.Link?.AbsoluteUri);
-			userData.AddItemIfNotEmpty("gender", graph.Gender);
-			userData.AddItemIfNotEmpty("firstname", graph.FirstName);
-			userData.AddItemIfNotEmpty("lastname", graph.LastName);
-			userData.AddItemIfNotEmpty("email", graph.EMails?["preferred"]);
+			userData.AddItemIfNotEmpty("first_name", graph.FirstName);
+			userData.AddItemIfNotEmpty("last_name", graph.LastName);
+			userData.AddItemIfNotEmpty("email", graph.EMails?.Preferred);
 			return userData;
 		}
 
@@ -160,11 +152,9 @@ namespace DotNetOpenAuth.AspNet.Clients {
 
 			using (var tokenResponse = (HttpWebResponse)tokenRequest.GetResponse()) {
 				if (tokenResponse.StatusCode == HttpStatusCode.OK) {
-					using (var responseStream = tokenResponse.GetResponseStream()) {
-						var tokenData = JsonHelper.Deserialize<OAuth2AccessTokenData>(responseStream);
-						if (tokenData != null) {
-							return tokenData.AccessToken;
-						}
+					var tokenData = JsonHelper.Deserialize<OAuth2AccessTokenData>(tokenResponse.GetResponseStream());
+					if (tokenData != null) {
+						return tokenData.AccessToken;
 					}
 				}
 			}

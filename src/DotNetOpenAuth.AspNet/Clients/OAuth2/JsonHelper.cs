@@ -5,7 +5,6 @@
 //-----------------------------------------------------------------------
 
 namespace DotNetOpenAuth.AspNet.Clients {
-	using System;
 	using System.IO;
 	using System.Runtime.Serialization.Json;
 	using Validation;

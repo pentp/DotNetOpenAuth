@@ -116,23 +116,15 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <returns>A dictionary of profile data.</returns>
 		protected override NameValueCollection GetUserData(string accessToken) {
 			FacebookGraphData graphData;
-			var request =
-				WebRequest.Create(
-					"https://graph.facebook.com/me?access_token=" + Uri.EscapeDataString(accessToken));
-			using (var response = request.GetResponse()) {
-				using (var responseStream = response.GetResponseStream()) {
-					graphData = JsonHelper.Deserialize<FacebookGraphData>(responseStream);
-				}
+			using (var response = WebRequest.CreateHttp("https://graph.facebook.com/me?fields=name,email,first_name,last_name&access_token=" + Uri.EscapeDataString(accessToken)).GetResponse()) {
+				graphData = JsonHelper.Deserialize<FacebookGraphData>(response.GetResponseStream());
 			}
 
-			// this dictionary must contains 
 			var userData = new NameValueCollection();
 			userData.AddItemIfNotEmpty("id", graphData.Id);
-			userData.AddItemIfNotEmpty("username", graphData.Email);
 			userData.AddItemIfNotEmpty("name", graphData.Name);
-			userData.AddItemIfNotEmpty("link", graphData.Link?.AbsoluteUri);
-			userData.AddItemIfNotEmpty("gender", graphData.Gender);
-			userData.AddItemIfNotEmpty("birthday", graphData.Birthday);
+			userData.AddItemIfNotEmpty("first_name", graphData.FirstName);
+			userData.AddItemIfNotEmpty("last_name", graphData.LastName);
 			userData.AddItemIfNotEmpty("email", graphData.Email);
 			return userData;
 		}
@@ -150,7 +142,6 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// The access token.
 		/// </returns>
 		protected override string QueryAccessToken(Uri returnUrl, string authorizationCode) {
-			// Note: Facebook doesn't like us to url-encode the redirect_uri value
 			var builder = new UriBuilder(TokenEndpoint);
 			builder.Query = new NameValueCollection {
 				{ "client_id", this.appId },
@@ -160,7 +151,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 				{ "scope", "email" },
 			}.BuildQuery();
 
-			using (WebClient client = new WebClient()) {
+			using (var client = new WebClient()) {
 				string data = client.DownloadString(builder.Uri);
 				if (string.IsNullOrEmpty(data)) {
 					return null;
