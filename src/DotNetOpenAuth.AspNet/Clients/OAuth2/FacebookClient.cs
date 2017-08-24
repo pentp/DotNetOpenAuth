@@ -22,12 +22,12 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <summary>
 		/// The authorization endpoint.
 		/// </summary>
-		private const string AuthorizationEndpoint = "https://www.facebook.com/dialog/oauth";
+		private const string AuthorizationEndpoint = "https://www.facebook.com/v2.10/dialog/oauth";
 
 		/// <summary>
-		/// The token endpoint.
+		/// Graph API version
 		/// </summary>
-		private const string TokenEndpoint = "https://graph.facebook.com/oauth/access_token";
+		private const string GraphEndpoint = "https://graph.facebook.com/v2.10/";
 
 		/// <summary>
 		/// The _app id.
@@ -116,7 +116,7 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// <returns>A dictionary of profile data.</returns>
 		protected override NameValueCollection GetUserData(string accessToken) {
 			FacebookGraphData graphData;
-			using (var response = WebRequest.CreateHttp("https://graph.facebook.com/me?fields=name,email,first_name,last_name&access_token=" + Uri.EscapeDataString(accessToken)).GetResponse()) {
+			using (var response = WebRequest.CreateHttp(GraphEndpoint + "me?fields=name,email,first_name,last_name&access_token=" + Uri.EscapeDataString(accessToken)).GetResponse()) {
 				graphData = JsonHelper.Deserialize<FacebookGraphData>(response.GetResponseStream());
 			}
 
@@ -142,24 +142,16 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		/// The access token.
 		/// </returns>
 		protected override string QueryAccessToken(Uri returnUrl, string authorizationCode) {
-			var builder = new UriBuilder(TokenEndpoint);
+			var builder = new UriBuilder(GraphEndpoint + "oauth/access_token");
 			builder.Query = new NameValueCollection {
 				{ "client_id", this.appId },
 				{ "redirect_uri", returnUrl.AbsoluteUri },
 				{ "client_secret", this.appSecret },
 				{ "code", authorizationCode },
-				{ "scope", "email" },
 			}.BuildQuery();
 
-			using (var client = new WebClient()) {
-				string data = client.DownloadString(builder.Uri);
-				if (string.IsNullOrEmpty(data)) {
-					return null;
-				}
-
-				var parsedQueryString = HttpUtility.ParseQueryString(data);
-				return parsedQueryString["access_token"];
-			}
+			using(var response = WebRequest.CreateHttp(builder.Uri).GetResponse())
+				return JsonHelper.Deserialize<FacebookAccessToken>(response.GetResponseStream())?.access_token;
 		}
 
 		#endregion

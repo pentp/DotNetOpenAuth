@@ -22,4 +22,11 @@ namespace DotNetOpenAuth.AspNet.Clients {
 		[DataMember(Name = "last_name")]
 		public string LastName;
 	}
+
+	[DataContract, EditorBrowsable(EditorBrowsableState.Never)]
+	public sealed class FacebookAccessToken
+	{
+		[DataMember]
+		public string access_token;
+	}
 }
