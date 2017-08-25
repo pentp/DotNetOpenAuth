@@ -12,3 +12,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
+[assembly: AssemblyTitle("LeanOAuth2Client")]
+[assembly: AssemblyProduct("LeanOAuth2Client")]

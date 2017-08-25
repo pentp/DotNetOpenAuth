@@ -6,10 +6,7 @@
 	<PropertyGroup>
 		<VersionCsFile>$(IntermediatePath)\$(AssemblyName).Version.cs</VersionCsFile>
 		<NoWarn>$(NoWarn);1607</NoWarn>
-		<UltimateResourceFallbackLocation Condition=" '$(UltimateResourceFallbackLocation)' == '' ">UltimateResourceFallbackLocation.MainAssembly</UltimateResourceFallbackLocation>
 	</PropertyGroup>
-
-	<UsingTask AssemblyFile="$(ProjectRoot)lib\MSBuild.Community.Tasks.dll" TaskName="AssemblyInfo"/>
 
 	<Target Name="GetBuildVersion">
 		<GetBuildVersion Condition=" '$(BuildVersion)' == '' "
@@ -23,16 +20,9 @@
 			<Output TaskParameter="BuildNumber" PropertyName="BuildNumber" />
 		</GetBuildVersion>
 		<PropertyGroup>
-			<!-- In TeamCity, the build agent doesn't get the .git directory, but the commit id is available by other means. -->
-			<GitCommitId Condition=" '$(GitCommitId)' == '' ">$(BUILD_VCS_NUMBER)</GitCommitId>
-
 			<GitCommitIdShort Condition=" '$(GitCommitId)' != '' ">.$(GitCommitId.Substring(0,10))</GitCommitIdShort>
 			<SemVerBuildSuffix>+build.$(BuildNumber)$(GitCommitIdShort)</SemVerBuildSuffix>
 			<AssemblyInformationalVersion>$(BuildVersionSimple)$(PrereleaseVersion)$(SemVerBuildSuffix)</AssemblyInformationalVersion>
-
-			<!-- When NuGet supports SemVer 2.0, we can set NuGetPackageVersion to be the same as $(AssemblyInformationalVersion) -->
-			<NuGetPackageVersion Condition=" '$(PrereleaseVersion)' == '' ">$(BuildVersion)</NuGetPackageVersion>
-			<NuGetPackageVersion Condition=" '$(PrereleaseVersion)' != '' ">$(BuildVersionSimple)$(PrereleaseVersion)</NuGetPackageVersion>
 		</PropertyGroup>
 		<Warning Condition=" '$(AssemblyInformationalVersion)' == '' " Text="Unable to determine the git HEAD commit ID to use for informational version number." />
 		<Message Condition=" '$(AssemblyInformationalVersion)' != '' " Text="Building version $(BuildVersion) from commit $(GitCommitId)"/>
@@ -46,15 +36,7 @@
 			<NewVersionCsFile>$(VersionCsFile).new</NewVersionCsFile>
 		</PropertyGroup>
 		<MakeDir Directories="$(IntermediatePath)"/>
-		<AssemblyInfo OutputFile="$(NewVersionCsFile)" CodeLanguage="C#"
-		              AssemblyVersion="$(MajorMinorVersion)"
-		              AssemblyFileVersion="$(BuildVersion)"
-		              AssemblyInformationalVersion="$(AssemblyInformationalVersion)"
-		              AssemblyTitle="$(AssemblyName)"
-		              AssemblyProduct="DotNetOpenAuth"
-		              NeutralResourcesLanguage="en-US"
-		              UltimateResourceFallbackLocation="$(UltimateResourceFallbackLocation)"
-		              GenerateClass="true" />
+		<WriteLinesToFile File="$(NewVersionCsFile)" Overwrite="true" Lines="using System.Reflection%3B[assembly:AssemblyVersion(&quot;$(MajorMinorVersion)&quot;)][assembly:AssemblyFileVersion(&quot;$(BuildVersion)&quot;)][assembly:AssemblyInformationalVersion(&quot;$(AssemblyInformationalVersion)&quot;)]" />
 		<!-- Avoid applying the newly generated AssemblyInfo.cs file to the build 
 		     unless it has changed in order to allow for incremental building. -->
 		<CompareFiles OriginalItems="$(VersionCsFile)" NewItems="$(NewVersionCsFile)">

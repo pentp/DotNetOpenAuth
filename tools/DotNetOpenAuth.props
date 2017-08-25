@@ -7,38 +7,9 @@
 		<OutputPath>$(ProjectRoot)bin\$(Configuration)\</OutputPath>
 		<DocOutputPath>$(ProjectRoot)doc\</DocOutputPath>
 		<IntermediatePath>$(ProjectRoot)obj\$(Configuration)\</IntermediatePath>
-		<BaseIntermediateOutputPath Condition=" '$(BaseIntermediateOutputPath)' == '' ">obj\</BaseIntermediateOutputPath>
 		<ToolsDir>$(ProjectRoot)tools\</ToolsDir>
-		<ZipLevel>6</ZipLevel>
-		<Zip7ToolPath>$(ToolsDir)7-Zip.x86\</Zip7ToolPath>
-		<NuGetToolPath>$(ToolsDir)NuGet\</NuGetToolPath>
-		<ZipFormat Condition=" '$(ZipFormat)' == '' ">.7z</ZipFormat>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<ProductProjectNames Include="
-									   DotNetOpenAuth.Core;
-										 DotNetOpenAuth.Core.UI;
-										 DotNetOpenAuth.Mvc;
-										 Mono.Math;
-										 Org.Mentalis.Security.Cryptography;
-										 DotNetOpenAuth.OpenId;
-										 DotNetOpenAuth.OpenId.UI;
-										 DotNetOpenAuth.OpenId.Provider;
-										 DotNetOpenAuth.OpenId.Provider.UI;
-										 DotNetOpenAuth.OpenId.RelyingParty;
-										 DotNetOpenAuth.OpenId.RelyingParty.UI;
-										 DotNetOpenAuth.OAuth.Common;
-										 DotNetOpenAuth.OAuth;
-										 DotNetOpenAuth.OAuth.Consumer;
-										 DotNetOpenAuth.OAuth.ServiceProvider;
-										 DotNetOpenAuth.OpenIdOAuth;
-										 " />
-		<ProductProjects Include="@(ProductProjectNames->'$(ProjectRoot)src\%(Identity)\%(Identity).csproj')"/>
-
-		<ProjectReferencesToRemove Include="@(ProductProjectNames->'..\..\src\%(Identity)\%(Identity).csproj')" />
-		<AssemblyReferencesToReplaceWith Include="@(ProjectReferencesToRemove->'..\..\Bin-net4.0\$(ProductName).dll')" />
-	</ItemGroup>
-
-	<Import Project="$(ProjectRoot)lib\DotNetOpenAuth.BuildTasks.targets" />
+	<UsingTask AssemblyFile="$(ProjectRoot)lib\DotNetOpenAuth.BuildTasks.dll" TaskName="GetBuildVersion" />
+	<UsingTask AssemblyFile="$(ProjectRoot)lib\DotNetOpenAuth.BuildTasks.dll" TaskName="CompareFiles" />
 </Project>
