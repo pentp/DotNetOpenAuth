@@ -23,7 +23,14 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <Import Project="$(ProjectRoot)tools\DotNetOpenAuth.props" />
-  <Import Project="$(ProjectRoot)tools\DotNetOpenAuth.Product.props" />
+  <PropertyGroup>
+    <DocumentationFile>$(OutputPath)$(AssemblyName).xml</DocumentationFile>
+    <StandardCopyright>
+Copyright (c) 2012, Outercurve Foundation. All rights reserved.
+Code licensed under the Ms-PL License:
+http://opensource.org/licenses/ms-pl.html
+    </StandardCopyright>
+  </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>DotNetOpenAuth.AspNet</RootNamespace>
   </PropertyGroup>
