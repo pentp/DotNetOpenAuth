@@ -2,8 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
 	<PropertyGroup>
 		<ProductName>DotNetOpenAuth</ProductName>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
 		<DisableFastUpToDateCheck>false</DisableFastUpToDateCheck>
 		<DropsRoot>$(ProjectRoot)drops\$(Configuration)\</DropsRoot>
 		<OutputPath>$(ProjectRoot)bin\$(Configuration)\</OutputPath>
@@ -15,13 +13,6 @@
 		<Zip7ToolPath>$(ToolsDir)7-Zip.x86\</Zip7ToolPath>
 		<NuGetToolPath>$(ToolsDir)NuGet\</NuGetToolPath>
 		<ZipFormat Condition=" '$(ZipFormat)' == '' ">.7z</ZipFormat>
-
-		<SignAssembly>true</SignAssembly>
-		<PublicKeyFile Condition="'$(PublicKeyFile)' == ''">$(ProjectRoot)src\official-build-key.pub</PublicKeyFile>
-		<AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == ''">$(ProjectRoot)src\official-build-key.snk</AssemblyOriginatorKeyFile>
-		<KeyPairContainer Condition="'$(KeyPairContainer)' == ''">DotNetOpenAuth</KeyPairContainer>
-		<PublicKeyToken>d0acff3d13b42a9d</PublicKeyToken>
-		<DelaySign>false</DelaySign>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -43,15 +34,6 @@
 										 DotNetOpenAuth.OAuth.ServiceProvider;
 										 DotNetOpenAuth.OpenIdOAuth;
 										 " />
-		<ProductProjectNames Include="
-										 DotNetOpenAuth.OAuth2;
-										 DotNetOpenAuth.OAuth2.ClientAuthorization;
-										 DotNetOpenAuth.OAuth2.AuthorizationServer;
-										 DotNetOpenAuth.OAuth2.Client;
-										 DotNetOpenAuth.OAuth2.Client.UI;
-										 DotNetOpenAuth.OAuth2.ResourceServer;
-										">
-		</ProductProjectNames>
 		<ProductProjects Include="@(ProductProjectNames->'$(ProjectRoot)src\%(Identity)\%(Identity).csproj')"/>
 
 		<ProjectReferencesToRemove Include="@(ProductProjectNames->'..\..\src\%(Identity)\%(Identity).csproj')" />
